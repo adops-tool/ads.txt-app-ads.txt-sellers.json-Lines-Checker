@@ -2,11 +2,11 @@
 
 A comprehensive AdOps utility tool built for Chrome (Manifest V3). It automates the validation of `ads.txt` and `app-ads.txt` files, cross-references inventory against a `sellers.json` registry, and highlights syntax errors or configuration mismatches in real-time.
 
-![Version](https://img.shields.io/badge/version-6.3.0-21aeb3)
+![Version](https://img.shields.io/badge/version-6.4.0-21aeb3)
 ![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?logo=google-chrome&logoColor=white)
 ![Manifest](https://img.shields.io/badge/manifest-V3-2ea44f)
 ![Category](https://img.shields.io/badge/category-AdOps-orange)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-MIT-21aeb3)
 ![Repo Size](https://img.shields.io/github/repo-size/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
 
 ## Key Features
@@ -62,24 +62,32 @@ A comprehensive AdOps utility tool built for Chrome (Manifest V3). It automates 
 The extension performs the following checks on every line:
 
 ```javascript
-// Example Logic Flow
-if (line.includes(brand)) {
-    // 1. Syntax Check
-    if (line_starts_with_invalid_char) {
-        mark_critical_error("Ignored by crawlers");
+// Simplified Logic Flow based on popup.js
+lines.forEach(line => {
+    // 1. Filter by Brand (e.g., "adwmg")
+    if (line.toLowerCase().includes(brandName)) {
+        
+        // 2. Critical Syntax Check
+        // Detects valid data that is accidentally commented out (e.g., "# adwmg.com, 12345...")
+        if (startsWithSpecialChar(line) && line.includes(",")) {
+            markAsCriticalError("Error: Data line is commented out!");
+        }
+
+        // 3. Sellers.json Cross-Reference
+        const sellerId = extractSellerId(line); // Extracts the 2nd field
+        if (sellerId && !isIdInSellersJson(sellerId)) {
+            // Checks if this specific ID exists in the fetched sellers.json cache
+            markAsWarning("Warning: ID not found in sellers.json");
+        }
     }
-    
-    // 2. ID Validation
-    const sellerId = extract_id(line);
-    if (!sellersJson.contains(sellerId)) {
-        mark_warning("ID not found in sellers.json");
-    }
+});
 }```
 
 ## Project Structure
 
 ├── manifest.json      # Extension configuration (Manifest V3)
 ├── background.js      # Service Worker: Handles fetching, caching (sellers.json), and badge updates
+├── overlay.js         # Content Script: Injects the "Domains Found" overlay directly onto .txt pages
 ├── popup.html         # Main Extension UI: Tabs layout and container
 ├── popup.css          # Styling: Dark/Light theming, badges, and scrollbars
 ├── popup.js           # Core Logic: Parses text files, runs validation, and renders results
