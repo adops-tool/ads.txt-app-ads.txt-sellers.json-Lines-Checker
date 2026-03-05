@@ -69,15 +69,13 @@ if len(diff_text.strip()) < 50:
     print("Diff too small to analyze. Skipping.")
     exit(0)
 
-open_issues = repo.get_issues(state="open")
-for issue in open_issues[:50]:
+for issue in repo.get_issues(state="open"):
     if dedup_key in (issue.body or ""):
         print(f"Issue for {dedup_key} already exists (#{issue.number}), skipping.")
         exit(0)
 
 def was_already_closed(title_keyword: str) -> bool:
-    closed_issues = repo.get_issues(state="closed")
-    for issue in closed_issues[:50]:
+    for issue in repo.get_issues(state="closed"):
         if title_keyword.lower() in (issue.title or "").lower():
             print(f"Similar closed issue found: #{issue.number} — skipping.")
             return True
