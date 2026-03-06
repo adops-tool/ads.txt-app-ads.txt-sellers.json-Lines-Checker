@@ -16,23 +16,6 @@ const lastScanAt = Object.create(null);
 const scheduledTimers = Object.create(null);
 const retryAttempts = Object.create(null);
 
-async function fetchWithTimeoutAndRetry(url, { timeout = FETCH_TIMEOUT_MS, retries = FETCH_RETRIES, fetchOptions = {} } = {}) {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    try {
-      const res = await fetch(url, { signal: controller.signal, ...fetchOptions });
-      clearTimeout(id);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res;
-    } catch (err) {
-      clearTimeout(id);
-      if (attempt === retries) throw err;
-      await new Promise(r => setTimeout(r, 300 * (attempt + 1)));
-    }
-  }
-}
-
 async function fetchAndCacheSellers() {
   const config = await new Promise(r => chrome.storage.local.get([CUSTOM_URL_KEY], (res) => {
     if (chrome.runtime.lastError) return r({});
@@ -90,6 +73,12 @@ function cancelScheduled(tabId) {
   }
 }
 
+function cleanupTab(tabId) {
+  cancelScheduled(tabId);
+  delete countsByTab[tabId];
+  delete lastScanAt[tabId];
+}
+
 async function getSellersDomain() {
   const config = await new Promise(r => chrome.storage.local.get([CUSTOM_URL_KEY], (res) => {
     if (chrome.runtime.lastError) return r({});
@@ -128,8 +117,8 @@ async function executeCountadwmgLines(tabId, origin) {
             fetchWithTimeout(baseUrl + "/ads.txt", timeoutMs),
             fetchWithTimeout(baseUrl + "/app-ads.txt", timeoutMs)
           ]);
-          return { 
-            ok: true, 
+          return {
+            ok: true,
             adsCount: countadwmgLines(adsText, filterDomain),
             appAdsLocalFailed: appAdsTextLocal === null,
             appAdsCountLocal: countadwmgLines(appAdsTextLocal, filterDomain)
@@ -137,7 +126,7 @@ async function executeCountadwmgLines(tabId, origin) {
         })();
       },
       args: [origin, FETCH_TIMEOUT_MS, domain],
-      world: "MAIN"
+      world: "ISOLATED"
     });
 
     if (!Array.isArray(results) || results.length === 0 || !results[0].result) return { ok: false, count: 0 };
@@ -190,6 +179,7 @@ async function retryScanForTab(tabId) {
 
 function scheduleScan(tabId) {
   cancelScheduled(tabId);
+  delete lastScanAt[tabId];
   scheduledTimers[tabId] = setTimeout(() => retryScanForTab(tabId), INITIAL_DELAY_MS);
 }
 
@@ -201,6 +191,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
     scheduleScan(tabId);
   }
 });
+chrome.tabs.onRemoved.addListener((tabId) => { cleanupTab(tabId); });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {

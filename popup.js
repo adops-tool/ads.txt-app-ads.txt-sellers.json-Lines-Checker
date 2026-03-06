@@ -3,12 +3,12 @@
   const appAdsTab = document.getElementById("appads-tab");
   const sellerTab = document.getElementById("seller-tab");
   const output = document.getElementById("output");
-  
+
   const filterArea = document.getElementById("filter-area");
   const filterLeftSection = document.getElementById("filter-left-section");
   const linkBlock = document.getElementById("link-block");
   const filterStatusText = document.getElementById("filter-status-text");
-  
+
   const settingsToggle = document.getElementById("settings-toggle");
   const settingsPanel = document.getElementById("settings-panel");
   const urlInput = document.getElementById("sellers-url-input");
@@ -26,7 +26,7 @@
 
   let adsData = { text: "", url: "", date: null };
   let appAdsData = { text: "", url: "", date: null };
-  
+
   let sellersData = [];
   let current = "seller";
   let isFilterActive = true;
@@ -52,47 +52,29 @@
     return count > 0 ? count : "0";
   }
 
-  async function fetchWithTimeoutAndRetry(url, { timeout = 8000, retries = 1, force = false } = {}) {
-    const fetchOptions = force ? { cache: "reload" } : {};
-    for (let attempt = 0; attempt <= retries; attempt++) {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeout);
-      try {
-        const res = await fetch(url, { signal: controller.signal, ...fetchOptions });
-        clearTimeout(id);
-        return res;
-      } catch (err) {
-        clearTimeout(id);
-        if (attempt === retries) throw err;
-        await new Promise(r => setTimeout(r, 200 * (attempt + 1)));
-      }
-    }
-  }
-
   async function fetchTxtFile(base, name, force = false) {
     if (!base) return { text: `File ${name} not found.`, isError: true };
     const url = `${base.replace(/\/$/, "")}/${name}`;
+    const fetchOptions = force ? { cache: "reload" } : {};
     try {
-      const res = await fetchWithTimeoutAndRetry(url, { force });
+      const res = await fetchWithTimeoutAndRetry(url, { timeout: 8000, retries: 1, fetchOptions });
       const contentType = res.headers.get("content-type");
       if (contentType && contentType.toLowerCase().includes("text/html")) {
         return { text: `Error: ${name} returned HTML header (likely a 404 page).`, isError: true };
       }
-      if (!res.ok) return { text: `File ${name} not found (Error: ${res.status}).`, isError: true };
-      
       const text = await res.text();
       const textTrimmed = text.trim();
-
-      if (textTrimmed.startsWith("<!DOCTYPE") || 
-          textTrimmed.startsWith("<html") || 
-          textTrimmed.startsWith("<head") || 
-          textTrimmed.startsWith("<body") ||
-          textTrimmed.substring(0, 300).toLowerCase().includes("<script")) {
-         return { text: `Error: ${name} appears to be an HTML page (Soft 404), not a valid text file.`, isError: true };
+      if (
+        textTrimmed.startsWith("<!DOCTYPE") ||
+        textTrimmed.startsWith("<html") ||
+        textTrimmed.startsWith("<head") ||
+        textTrimmed.startsWith("<body") ||
+        textTrimmed.substring(0, 300).toLowerCase().includes("<script")
+      ) {
+        return { text: `Error: ${name} appears to be an HTML page (Soft 404), not a valid text file.`, isError: true };
       }
-
       const lastModified = res.headers.get("Last-Modified");
-      return { text, finalUrl: res.url || url, lastModified: lastModified, isError: false };
+      return { text, finalUrl: res.url || url, lastModified, isError: false };
     } catch {
       return { text: `File ${name} not found (Network Error).`, isError: true };
     }
@@ -129,15 +111,19 @@
     } else {
       element.className = "badge error";
       element.textContent = `${label}: `;
-      const link = document.createElement("a");
-      let href = result.value;
-      if (!href.startsWith("http")) href = "http://" + href;
-      link.href = href;
-      link.target = "_blank";
-      link.textContent = result.value;
-      link.style.color = "inherit";
-      link.style.textDecoration = "underline";
-      element.appendChild(link);
+      const href = safeHref(result.value);
+      if (href) {
+        const link = document.createElement("a");
+        link.href = href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = result.value;
+        link.style.color = "inherit";
+        link.style.textDecoration = "underline";
+        element.appendChild(link);
+      } else {
+        element.appendChild(document.createTextNode(result.value));
+      }
     }
   }
 
@@ -169,12 +155,12 @@
         if (startsWithSpecial && hasComma) {
           isError = true;
           warningTitle = "Error: Data line is commented out!";
-          lineNode.classList.add("line-critical-error"); 
+          lineNode.classList.add("line-critical-error");
         }
 
         const parts = trimmedLine.split(",").map(p => p.trim());
         if (parts.length >= 2) {
-          const cleanId = parts[1].split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, ""); 
+          const cleanId = parts[1].split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, "");
           if (cleanId && !isIdInSellers(cleanId)) {
             isMismatch = true;
             if (!isError && !startsWithSpecial) {
@@ -209,7 +195,7 @@
     const brand = getBrandName(currentSellersUrl).toLowerCase();
     if (!isFilterActive) { renderTextSafe(container, text); return; }
     const filtered = (text || "").split("\n").filter(l => l.toLowerCase().includes(brand));
-    if (filtered.length === 0) { container.textContent = `No ${brand} matches.`; } 
+    if (filtered.length === 0) { container.textContent = `No ${brand} matches.`; }
     else { renderTextSafe(container, filtered.join("\n")); }
   }
 
@@ -238,7 +224,7 @@
       const d = new Date(data.date);
       fileDateEl.textContent = `Modified: ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
     } else { fileDateEl.textContent = ""; }
-    
+
     const ownerRes = checkDomainField(data.text, "OWNERDOMAIN");
     renderBadge(ownerBadgeEl, "OWNER", ownerRes);
 
@@ -250,7 +236,7 @@
     linkBlock.textContent = "";
     const brand = getBrandName(currentSellersUrl);
     if (current === "seller") {
-      statusContainer.style.display = "none"; 
+      statusContainer.style.display = "none";
       filterArea.style.display = "none";
       const matches = findSellerMatches();
       sellerCountEl.textContent = matches.length || "0";
@@ -271,15 +257,21 @@
         });
       }
     } else {
-      updateStatusInfo(current); 
+      updateStatusInfo(current);
       filterArea.style.display = "flex";
       const data = current === "ads" ? adsData : appAdsData;
-      if (data.url) { 
-        const a = document.createElement("a"); 
-        a.href = data.url; 
-        a.target = "_blank"; 
-        a.textContent = data.url; 
-        linkBlock.appendChild(a); 
+      if (data.url) {
+        const href = safeHref(data.url);
+        if (href) {
+          const a = document.createElement("a");
+          a.href = href;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = data.url;
+          linkBlock.appendChild(a);
+        } else {
+          linkBlock.textContent = data.url;
+        }
       }
       filterAndRender(data.text, output);
     }
@@ -324,7 +316,8 @@
         updateFilterText();
         chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
           if (chrome.runtime.lastError || !tabs || !tabs[0]) return resolve();
-          let origin = ""; try { const u = new URL(tabs[0].url); if (u.protocol.startsWith("http")) { origin = u.origin; currentTabDomain = u.hostname; } } catch {}
+          let origin = "";
+          try { const u = new URL(tabs[0].url); if (u.protocol.startsWith("http")) { origin = u.origin; currentTabDomain = u.hostname; } } catch {}
           const [adsRes, appRes] = await Promise.all([
             fetchTxtFile(origin, "ads.txt", force),
             fetchTxtFile(origin, "app-ads.txt", force)

@@ -7,7 +7,7 @@
   }
 
   const content = document.body.innerText || document.body.textContent;
-  
+
   const owner = findDomainField(content, "OWNERDOMAIN");
   const manager = findDomainField(content, "MANAGERDOMAIN");
 
@@ -37,38 +37,48 @@
   title.style.cssText = "font-size: 12px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; font-weight: bold;";
   container.appendChild(title);
 
+  function safeHref(value) {
+    if (!value) return null;
+    let href = value.trim();
+    if (!href.startsWith("http://") && !href.startsWith("https://")) {
+      href = "https://" + href;
+    }
+    try {
+      const url = new URL(href);
+      if (url.protocol === "http:" || url.protocol === "https:") return url.toString();
+      return null;
+    } catch {
+      return null;
+    }
+  }
+
   function createRow(label, domain) {
     if (!domain) return;
-    
+
     const row = document.createElement("div");
     row.style.marginBottom = "6px";
-    
+
     const labelSpan = document.createElement("span");
     labelSpan.textContent = `${label}: `;
     labelSpan.style.fontWeight = "bold";
     labelSpan.style.marginRight = "5px";
     labelSpan.style.color = "#21aeb3";
 
-    const link = document.createElement("a");
-    let href = domain.trim();
-    if (!href.startsWith("http")) href = "http://" + href;
-    
-    try {
-      const url = new URL(href, window.location.origin);
-      if (url.protocol === "http:" || url.protocol === "https:") {
-        link.href = url.toString();
-      } else {
-        link.href = "about:blank";
-      }
-    } catch (e) {
-      link.href = "about:blank";
+    const href = safeHref(domain);
+    if (href) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = domain;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.style.cssText = "color: white; text-decoration: underline; cursor: pointer;";
+      row.appendChild(labelSpan);
+      row.appendChild(link);
+    } else {
+      row.appendChild(labelSpan);
+      row.appendChild(document.createTextNode(domain));
     }
-    link.textContent = domain;
-    link.target = "_blank";
-    link.style.cssText = "color: white; text-decoration: underline; cursor: pointer;";
-    
-    row.appendChild(labelSpan);
-    row.appendChild(link);
+
     container.appendChild(row);
   }
 

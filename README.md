@@ -2,7 +2,7 @@
 
 A comprehensive AdOps utility tool built for Chrome (Manifest V3). It automates the validation of `ads.txt` and `app-ads.txt` files, cross-references inventory against a `sellers.json` registry, and highlights syntax errors or configuration mismatches in real-time.
 
-![Version](https://img.shields.io/badge/version-6.4.1-21aeb3)
+![Version](https://img.shields.io/badge/version-6.4.3-21aeb3)
 ![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?logo=google-chrome&logoColor=white)
 ![Manifest](https://img.shields.io/badge/manifest-V3-2ea44f)
 ![Category](https://img.shields.io/badge/category-AdOps-orange)
@@ -92,15 +92,3 @@ lines.forEach(line => {
 ├── popup.css          # Styling: Dark/Light theming, badges, and scrollbars
 ├── popup.js           # Core Logic: Parses text files, runs validation, and renders results
 └── utils.js           # Shared Utilities: URL cleaning and Brand Name extraction logic
-```
-
-
-## ❤️ Support the Project
-
-If you find this tool useful, consider leaving a ⭐ on GitHub or supporting the author directly:
-
-[![Patreon](https://img.shields.io/badge/Patreon-OstinFCT-f96854?style=flat-square&logo=patreon)](https://www.patreon.com/OstinFCT)
-[![Ko-fi](https://img.shields.io/badge/Ko--fi-fctostin-29abe0?style=flat-square&logo=ko-fi)](https://ko-fi.com/fctostin)
-[![Boosty](https://img.shields.io/badge/Boosty-Support-f15f2c?style=flat-square)](https://boosty.to/ostinfct)
-[![YouTube](https://img.shields.io/badge/YouTube-FCT--Ostin-red?style=flat-square&logo=youtube)](https://www.youtube.com/@FCT-Ostin)
-[![Telegram](https://img.shields.io/badge/Telegram-FCTostin-2ca5e0?style=flat-square&logo=telegram)](https://t.me/FCTostin)
