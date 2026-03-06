@@ -1,14 +1,17 @@
-# Ads.txt / App-ads.txt & Sellers.json Lines Checker
+# 🛡️ Ads.txt / App-ads.txt & Sellers.json Validator (Chrome Extension)
 
 > AdOps-grade Chrome Extension for fast, no-nonsense supply-path sanity checks.
+
+A comprehensive AdOps utility tool built for Chrome (Manifest V3). It automates the validation of `ads.txt` and `app-ads.txt` files, cross-references inventory against a `sellers.json` registry, and highlights syntax errors or configuration mismatches in real-time.
 
 [![Version](https://img.shields.io/badge/version-6.4.3-21aeb3?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
 [![Chrome Extension](https://img.shields.io/badge/Platform-Chrome_Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions)
 [![Manifest V3](https://img.shields.io/badge/Manifest-V3-2ea44f?style=for-the-badge)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
+[![Category](https://img.shields.io/badge/category-AdOps-orange?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-21aeb3?style=for-the-badge)](LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/commits)
 
-This project is a Manifest V3 Chrome extension that validates `ads.txt` and `app-ads.txt`, cross-checks seller IDs against `sellers.json`, surfaces syntax/data mismatches, and gives you a pragmatic UI to triage monetization hygiene in seconds.
+[![Repo Size](https://img.shields.io/github/repo-size/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
+[![Last Commit](https://img.shields.io/github/last-commit/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/commits)
 
 > [!IMPORTANT]
 > This tool is designed for operational validation workflows (AdOps / Yield / Publisher Engineering). It helps you spot bad lines quickly, but it does not replace end-to-end business logic validation of your entire ad stack.
