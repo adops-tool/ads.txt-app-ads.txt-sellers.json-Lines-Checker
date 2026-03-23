@@ -1,7 +1,7 @@
 (() => {
   function findDomainField(text, fieldName) {
     if (!text) return null;
-    const lines = text.split(/\r?\n/);
+    const lines = text.split(/\r\n|\r|\n/);
     for (const rawLine of lines) {
       const line = rawLine.replace(/^[\s#]+/, "");
       const regex = new RegExp(`^${fieldName}\\s*[=,:]?\\s*([^\\s#,]+)`, "i");

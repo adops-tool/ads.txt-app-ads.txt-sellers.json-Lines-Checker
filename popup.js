@@ -63,7 +63,8 @@ function updateFilterText() {
       if (contentType && contentType.toLowerCase().includes("text/html")) {
         return { text: `Error: ${name} returned HTML header (likely a 404 page).`, isError: true };
       }
-      const text = await res.text();
+      let text = await res.text();
+      text = text.replace(/\r\n|\r/g, "\n");
       const textTrimmed = text.trim();
       if (
         textTrimmed.startsWith("<!DOCTYPE") ||
