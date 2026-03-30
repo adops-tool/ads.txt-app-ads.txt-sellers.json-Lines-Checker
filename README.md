@@ -1,12 +1,13 @@
-# adWMG Checker: ads.txt / app-ads.txt / sellers.json Validator
+# 🛡️ Ads.txt / App-ads.txt & Sellers.json Validator (Chrome Extension)
 
-A production-focused Chrome Extension (Manifest V3) that performs fast, in-browser validation of `ads.txt` and `app-ads.txt` files, cross-references IDs against `sellers.json`, and surfaces AdOps-critical anomalies in real time.
+> A zero-dependency Chrome Extension (Manifest V3) for AdOps engineers to validate `ads.txt` and `app-ads.txt` inventories, cross-reference seller IDs against a `sellers.json` registry, and surface syntax errors or configuration mismatches in real-time — directly in the browser.
 
-[![Version](https://img.shields.io/badge/version-6.7.1-21aeb3?style=for-the-badge)](manifest.json)
-[![Build](https://img.shields.io/github/actions/workflow/status/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/lint.yml?style=for-the-badge&label=Build%20%26%20Lint)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/actions/workflows/lint.yml)
-[![Security](https://img.shields.io/github/actions/workflow/status/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/sast.yml?style=for-the-badge&label=CodeQL)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/actions/workflows/sast.yml)
-[![Coverage](https://img.shields.io/badge/coverage-manual%20QA-orange?style=for-the-badge)](#testing)
+[![Version](https://img.shields.io/badge/version-6.7.2-21aeb3?style=for-the-badge)](manifest.json)
+[![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
+[![Manifest](https://img.shields.io/badge/manifest-V3-2ea44f?style=for-the-badge)](manifest.json)
+[![Category](https://img.shields.io/badge/category-AdOps-orange?style=for-the-badge)](https://iabtechlab.com/ads-txt/)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge)](LICENSE)
+[![Repo Size](https://img.shields.io/github/repo-size/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
 
 > [!NOTE]
 > The project is intentionally lightweight: no npm runtime dependency graph is required to run the extension.
