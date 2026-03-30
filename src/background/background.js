@@ -1,4 +1,4 @@
-importScripts('utils.js');
+importScripts('../shared/utils.js');
 
 const CACHE_KEY = "adwmg_sellers_cache";
 const CACHE_TS_KEY = "adwmg_sellers_ts";

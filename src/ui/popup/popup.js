@@ -320,7 +320,7 @@
     if (currentTabDomain) {
       // Открытие в новом отдельном окне вместо вкладки
       chrome.windows.create({
-        url: `analyzer.html?domain=${currentTabDomain}`,
+        url: `../analyzer/analyzer.html?domain=${currentTabDomain}`,
         type: "popup",
         width: 1050,
         height: 700
