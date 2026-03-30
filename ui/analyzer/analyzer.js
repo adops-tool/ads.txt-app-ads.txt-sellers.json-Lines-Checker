@@ -24,8 +24,14 @@
   const adsRedirect = document.getElementById("ads-redirect");
   const appadsRedirect = document.getElementById("appads-redirect");
 
-  /* ---- Helpers ---- */
-
+  /**
+   * Normalizes a user-entered domain string for file lookups.
+   *
+   * @param {string} raw Raw domain input from the UI.
+   * @returns {string} Normalized domain without protocol, `www`, or trailing slash.
+   * @example
+   * normalizeDomain("https://www.Example.com/") // "example.com"
+   */
   function normalizeDomain(raw) {
     let d = raw.trim().toLowerCase();
     d = d.replace(/^https?:\/\//, "");
@@ -34,6 +40,17 @@
     return d;
   }
 
+  /**
+   * Fetches a text file from the target domain and classifies common failure modes.
+   *
+   * @param {string} domain Target domain, already normalized.
+   * @param {string} filename File to fetch (for example, `ads.txt`).
+   * @returns {Promise<{text: (string|null), error: (string|null), isRedirect: boolean}>}
+   * Fetch result containing file text on success, error message on failure, and redirect state.
+   * @example
+   * const result = await fetchFile("example.com", "ads.txt");
+   * // { text: "...", error: null, isRedirect: false }
+   */
   async function fetchFile(domain, filename) {
     const url = `https://${domain}/${filename}`;
     try {
@@ -68,8 +85,24 @@
     }
   }
 
-  /* ---- Parsing ---- */
-
+  /**
+   * Parses a single ads-like line into a typed analysis object.
+   *
+   * @param {string} raw Raw input line from the source file.
+   * @returns {{
+   *   type: "empty"|"variable"|"error"|"comment"|"data",
+   *   raw: string,
+   *   trimmed: string,
+   *   reason?: string,
+   *   domain?: string,
+   *   pubId?: string,
+   *   relationship?: string,
+   *   key?: string
+   * }} Parsed line metadata used by the analyzer and renderer.
+   * @example
+   * parseLine("example.com, pub-123, DIRECT");
+   * // { type: "data", domain: "example.com", pubId: "pub-123", ... }
+   */
   function parseLine(raw) {
     const trimmed = raw.trim();
     if (!trimmed) return { type: "empty", raw, trimmed };
@@ -118,6 +151,23 @@
     };
   }
 
+  /**
+   * Analyzes full file text and computes duplicate, error, and relationship stats.
+   *
+   * @param {(string|null)} text File text content. `null` means unavailable.
+   * @returns {{
+   *   lines: Array<object>,
+   *   totalData: number,
+   *   duplicates: Set<number>,
+   *   errors: number,
+   *   direct: number,
+   *   reseller: number,
+   *   keySet: Set<string>
+   * }} Aggregate analysis used by stats and side-by-side rendering.
+   * @example
+   * const stats = analyzeFile("a.com, pub-1, DIRECT\\na.com, pub-1, DIRECT");
+   * // stats.duplicates.size === 2
+   */
   function analyzeFile(text) {
     if (!text) return { lines: [], totalData: 0, duplicates: new Set(), errors: 0, direct: 0, reseller: 0, keySet: new Set() };
 
@@ -150,8 +200,16 @@
     return { lines, totalData, duplicates, errors, direct, reseller, keySet };
   }
 
-  /* ---- Rendering ---- */
-
+  /**
+   * Renders analyzed lines into a column and applies semantic highlight classes.
+   *
+   * @param {HTMLElement} container Target column container.
+   * @param {{lines: Array<object>, duplicates: Set<number>}} analysis Analysis for the current file.
+   * @param {Set<string>} otherKeySet Data keys from the opposite file for discrepancy checks.
+   * @returns {void} Does not return a value.
+   * @example
+   * renderColumn(adsContent, adsAnalysis, appadsAnalysis.keySet);
+   */
   function renderColumn(container, analysis, otherKeySet) {
     container.innerHTML = "";
     const { lines, duplicates } = analysis;
@@ -176,6 +234,21 @@
     });
   }
 
+  /**
+   * Updates the stats bar values for one side (`ads` or `appads`).
+   *
+   * @param {string} prefix DOM id prefix used to resolve stat elements.
+   * @param {{
+   *   totalData: number,
+   *   duplicates: Set<number>,
+   *   errors: number,
+   *   direct: number,
+   *   reseller: number
+   * }} analysis Computed metrics for the selected file.
+   * @returns {void} Does not return a value.
+   * @example
+   * updateStats("ads", adsAnalysis);
+   */
   function updateStats(prefix, analysis) {
     const totalEl = document.getElementById(`${prefix}-total`);
     const dupesEl = document.getElementById(`${prefix}-dupes`);
@@ -188,8 +261,14 @@
     ratioEl.textContent = `DIRECT / RESELLER: ${analysis.direct} / ${analysis.reseller}`;
   }
 
-  /* ---- Main analysis flow ---- */
-
+  /**
+   * Runs the end-to-end analysis flow for `ads.txt` and `app-ads.txt`.
+   *
+   * @param {string} domain Raw domain entered by the user.
+   * @returns {Promise<void>} Resolves after UI updates complete.
+   * @example
+   * await runAnalysis("example.com");
+   */
   async function runAnalysis(domain) {
     domain = normalizeDomain(domain);
     if (!domain) {
@@ -260,8 +339,7 @@
     }
   }
 
-  /* ---- Event Listeners ---- */
-
+  /* Event listeners */
   const initialDomain = normalizeDomain(new URLSearchParams(window.location.search).get("domain") || "");
   if (initialDomain) {
     domainInput.value = initialDomain;
