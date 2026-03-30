@@ -24,7 +24,7 @@
   const adsRedirect = document.getElementById("ads-redirect");
   const appadsRedirect = document.getElementById("appads-redirect");
 
-  /* ---- Helpers ---- */
+  /* Helpers */
 
   function normalizeDomain(raw) {
     let d = raw.trim().toLowerCase();
@@ -68,7 +68,7 @@
     }
   }
 
-  /* ---- Parsing ---- */
+  /* Parsing */
 
   function parseLine(raw) {
     const trimmed = raw.trim();
@@ -150,7 +150,7 @@
     return { lines, totalData, duplicates, errors, direct, reseller, keySet };
   }
 
-  /* ---- Rendering ---- */
+  /* Rendering */
 
   function renderColumn(container, analysis, otherKeySet) {
     container.innerHTML = "";
@@ -188,7 +188,7 @@
     ratioEl.textContent = `DIRECT / RESELLER: ${analysis.direct} / ${analysis.reseller}`;
   }
 
-  /* ---- Main analysis flow ---- */
+  /* Main analysis flow */
 
   async function runAnalysis(domain) {
     domain = normalizeDomain(domain);
@@ -260,7 +260,7 @@
     }
   }
 
-  /* ---- Event Listeners ---- */
+  /* Event listeners */
 
   const initialDomain = normalizeDomain(new URLSearchParams(window.location.search).get("domain") || "");
   if (initialDomain) {

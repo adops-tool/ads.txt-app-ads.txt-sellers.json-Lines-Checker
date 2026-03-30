@@ -19,7 +19,7 @@ body {
   overflow: hidden;
 }
 
-/* ---- Top Bar ---- */
+/* Top bar */
 .top-bar {
   display: flex;
   gap: 8px;
@@ -53,7 +53,7 @@ body {
 }
 .top-bar input::placeholder { color: rgba(255,255,255,0.5); }
 
-/* ---- Stats Bar ---- */
+/* Stats bar */
 .stats-bar {
   display: flex;
   gap: 12px;
@@ -87,7 +87,7 @@ body {
 .stat-item.dupe { background: #fff8e1; color: #b8860b; }
 .stat-item.error { background: #fff0f0; color: #c92a2a; }
 
-/* ---- Workspace ---- */
+/* Workspace */
 .workspace {
   flex: 1;
   display: flex;
@@ -148,19 +148,19 @@ body {
   word-break: break-all;
 }
 
-/* Scrollbar */
+/* Column scrollbar */
 .column-body::-webkit-scrollbar { width: 8px; }
 .column-body::-webkit-scrollbar-track { background: #f1f1f1; }
 .column-body::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 .column-body::-webkit-scrollbar-thumb:hover { background: var(--brand-color); }
 
-/* ---- Line highlight classes ---- */
+/* Line highlight classes */
 .line { display: block; padding: 1px 4px; border-radius: 2px; }
 .line-error { background: #fff0f0; color: #c92a2a; border-left: 3px solid #e03131; }
 .line-duplicate { background: #fffbe6; color: #866a00; border-left: 3px solid #f0c000; }
 .line-discrepancy { background: #e8f4fd; color: #1864ab; border-left: 3px solid #339af0; }
 
-/* ---- Status message ---- */
+/* Status message */
 .status-msg {
   padding: 30px;
   text-align: center;
