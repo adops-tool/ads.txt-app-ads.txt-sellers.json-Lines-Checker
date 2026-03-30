@@ -1,4 +1,4 @@
-# 🛡️ Ads.txt / App-ads.txt & Sellers.json Validator (Chrome Extension)
+![adops Validator](https://capsule-render.vercel.app/api?type=blur&height=200&color=21aeb3&text=adops%20Validator&textBg=false&fontSize=70&fontAlign=50&section=header&fontColor=ffffff&stroke=000000)
 
 > A zero-dependency Chrome Extension (Manifest V3) for AdOps engineers to validate `ads.txt` and `app-ads.txt` inventories, cross-reference seller IDs against a `sellers.json` registry, and surface syntax errors or configuration mismatches in real-time — directly in the browser.
 
