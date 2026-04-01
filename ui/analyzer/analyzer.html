@@ -8,44 +8,93 @@
 <body>
   <div class="top-bar">
     <input type="text" id="domain-input" placeholder="Enter domain, e.g. example.com" />
-    <button id="analyze-btn">Analyze Current</button>
+    <button id="analyze-btn">Analyze</button>
   </div>
 
   <div id="stats-bar" class="stats-bar" style="display:none;">
     <div class="stat-group">
       <h4>ads.txt</h4>
       <span id="ads-total" class="stat-item">Lines: —</span>
-      <span id="ads-dupes" class="stat-item dupe">Duplicates: —</span>
-      <span id="ads-errors" class="stat-item error">Error: —</span>
-      <span id="ads-ratio" class="stat-item">DIRECT / RESELLER: —</span>
+      <span id="ads-dupes" class="stat-item dupe">Dupes: —</span>
+      <span id="ads-errors" class="stat-item error">Errors: —</span>
+      <span id="ads-ratio-display" class="stat-item ratio-neutral">D/R: —</span>
     </div>
     <div class="stat-group">
       <h4>app-ads.txt</h4>
       <span id="appads-total" class="stat-item">Lines: —</span>
-      <span id="appads-dupes" class="stat-item dupe">Duplicates: —</span>
-      <span id="appads-errors" class="stat-item error">Error: —</span>
-      <span id="appads-ratio" class="stat-item">DIRECT / RESELLER: —</span>
+      <span id="appads-dupes" class="stat-item dupe">Dupes: —</span>
+      <span id="appads-errors" class="stat-item error">Errors: —</span>
+      <span id="appads-ratio-display" class="stat-item ratio-neutral">D/R: —</span>
     </div>
   </div>
 
   <div id="workspace" class="workspace" style="display:none;">
+    <!-- ═══ LEFT: ads.txt ═══ -->
     <div class="column">
       <div class="column-header">
-        <a id="ads-link" href="#" target="_blank" rel="noopener noreferrer">ads.txt</a>
+        <a id="ads-link" href="#" rel="noopener noreferrer">ads.txt</a>
         <span id="ads-redirect" class="redirect-badge" style="display:none;">Redirected</span>
       </div>
+      <div class="column-search">
+        <input type="text" id="ads-search" placeholder="Search ads.txt…" />
+        <span id="ads-search-count" class="search-count"></span>
+        <button class="search-nav-btn" id="ads-search-prev" disabled title="Previous">▲</button>
+        <button class="search-nav-btn" id="ads-search-next" disabled title="Next">▼</button>
+      </div>
       <div id="ads-content" class="column-body"></div>
+
+      <!-- Seat verification for ads.txt -->
+      <div class="seat-panel" id="ads-seat-panel" style="display:none;">
+        <div class="seat-panel-header">
+          <select id="ads-ssp-dropdown"><option value="">— SSP / Exchange —</option></select>
+          <button class="seat-verify-btn" id="ads-verify-btn" disabled>Verify</button>
+          <button class="seat-verify-all-btn" id="ads-verify-all-btn" disabled>All SSPs</button>
+        </div>
+        <div class="verify-progress" id="ads-verify-progress">
+          <div class="progress-track"><div class="progress-bar-inner" id="ads-progress-bar"></div></div>
+          <div class="progress-meta">
+            <span class="progress-msg" id="ads-progress-msg"></span>
+            <span class="progress-count" id="ads-progress-count"></span>
+          </div>
+        </div>
+        <div class="seat-results" id="ads-seat-results"></div>
+      </div>
     </div>
+
+    <!-- ═══ RIGHT: app-ads.txt ═══ -->
     <div class="column">
       <div class="column-header">
-        <a id="appads-link" href="#" target="_blank" rel="noopener noreferrer">app-ads.txt</a>
+        <a id="appads-link" href="#" rel="noopener noreferrer">app-ads.txt</a>
         <span id="appads-redirect" class="redirect-badge" style="display:none;">Redirected</span>
       </div>
+      <div class="column-search">
+        <input type="text" id="appads-search" placeholder="Search app-ads.txt…" />
+        <span id="appads-search-count" class="search-count"></span>
+        <button class="search-nav-btn" id="appads-search-prev" disabled title="Previous">▲</button>
+        <button class="search-nav-btn" id="appads-search-next" disabled title="Next">▼</button>
+      </div>
       <div id="appads-content" class="column-body"></div>
+
+      <!-- Seat verification for app-ads.txt -->
+      <div class="seat-panel" id="appads-seat-panel" style="display:none;">
+        <div class="seat-panel-header">
+          <select id="appads-ssp-dropdown"><option value="">— SSP / Exchange —</option></select>
+          <button class="seat-verify-btn" id="appads-verify-btn" disabled>Verify</button>
+          <button class="seat-verify-all-btn" id="appads-verify-all-btn" disabled>All SSPs</button>
+        </div>
+        <div class="verify-progress" id="appads-verify-progress">
+          <div class="progress-track"><div class="progress-bar-inner" id="appads-progress-bar"></div></div>
+          <div class="progress-meta">
+            <span class="progress-msg" id="appads-progress-msg"></span>
+            <span class="progress-count" id="appads-progress-count"></span>
+          </div>
+        </div>
+        <div class="seat-results" id="appads-seat-results"></div>
+      </div>
     </div>
   </div>
 
-  <div id="status-msg" class="status-msg">Enter a domain and click Analyze Current to begin.</div>
+  <div id="status-msg" class="status-msg">Enter a domain and click Analyze to begin.</div>
 
   <script src="analyzer.js"></script>
 </body>
