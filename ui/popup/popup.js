@@ -29,6 +29,7 @@
   const qaDupes = document.getElementById("qa-dupes");
   const qaErrors = document.getElementById("qa-errors");
   const qaRatio = document.getElementById("qa-ratio");
+  const qaDR = document.getElementById("qa-dr");
   const qaBtn = document.getElementById("qa-btn");
 
   let adsData = { text: "", url: "", date: null };
@@ -254,6 +255,22 @@
     renderBadge(managerBadgeEl, "MANAGER", managerRes);
   }
 
+  // ── Non-closing link: open in new tab via chrome.tabs.create ────────────
+  function createNonClosingLink(url, text) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.textContent = text;
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (typeof chrome !== "undefined" && chrome.tabs && chrome.tabs.create) {
+        chrome.tabs.create({ url });
+      } else {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    });
+    return a;
+  }
+
   function showCurrent() {
     linkBlock.textContent = "";
     const brand = getBrandName(currentSellersUrl);
@@ -285,12 +302,9 @@
       if (data.url) {
         const href = safeHref(data.url);
         if (href) {
-          const a = document.createElement("a");
-          a.href = href;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.textContent = data.url;
-          linkBlock.appendChild(a);
+          // Use non-closing link instead of regular <a>
+          const link = createNonClosingLink(href, data.url);
+          linkBlock.appendChild(link);
         } else {
           linkBlock.textContent = data.url;
         }
@@ -404,6 +418,22 @@
     qaDupes.textContent = tDupes;
     qaErrors.textContent = tErrors;
     qaRatio.textContent = `${tDirect} / ${tReseller}`;
+
+    // D/R ratio with color coding
+    if (qaDR) {
+      let drText = "—";
+      let drClass = "dr-neutral";
+      if (tReseller > 0) {
+        const r = tDirect / tReseller;
+        drText = r.toFixed(1);
+        drClass = r >= 1 ? "dr-green" : "dr-red";
+      } else if (tDirect > 0) {
+        drText = "∞";
+        drClass = "dr-green";
+      }
+      qaDR.textContent = drText;
+      qaDR.className = `qa-dr-value ${drClass}`;
+    }
   }
 
   async function loadData(force = false) {

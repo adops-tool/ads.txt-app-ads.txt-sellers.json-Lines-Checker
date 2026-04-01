@@ -265,6 +265,17 @@ body {
   font-weight: 700;
 }
 
+/* D/R ratio color coding in quick stats */
+.qa-dr-value.dr-green {
+  color: #0ca678;
+}
+.qa-dr-value.dr-red {
+  color: #fa5252;
+}
+.qa-dr-value.dr-neutral {
+  color: #999;
+}
+
 #qa-btn {
   background: var(--brand-color);
   color: #fff;
