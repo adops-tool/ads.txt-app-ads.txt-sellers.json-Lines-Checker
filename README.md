@@ -2,8 +2,8 @@
 
 > A zero-dependency Chrome Extension (Manifest V3) for AdOps engineers to validate `ads.txt` and `app-ads.txt` inventories, cross-reference seller IDs against a `sellers.json` registry, and surface syntax errors or configuration mismatches in real-time — directly in the browser.
 
-[![Version](https://img.shields.io/badge/version-7.2.0-21aeb3?style=for-the-badge)](manifest.json)
-[![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
+[![Version](https://img.shields.io/badge/version-7.2.0-21aeb3?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/releases)
+[![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/adwmg-checker-adstxtselle/gdmhmbejelimkohnpineofcgdigocdog)
 [![Build](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](.github/workflows/lint.yml)
 [![SAST](https://img.shields.io/badge/SAST-CodeQL-7a43b6?style=for-the-badge)](.github/workflows/sast.yml)
 [![OpenSSF Scorecard](https://img.shields.io/badge/Supply_Chain-Scorecard-0f766e?style=for-the-badge)](.github/workflows/scorecard.yml)
