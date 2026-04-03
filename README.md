@@ -1,16 +1,16 @@
-# adWMG Logging & Validation Library
+<a href="https://github.com/OstinUA" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/OstinUA/Image-storage/main/readme/readme-SVG-ads.txt-app-ads.txt-sellers.json-Lines-Checker.png" valign="middle" alt="readme SVG ads.txt app ads.txt sellers.json Lines Checker"></a>
 
-A production-oriented, zero-dependency JavaScript logging and validation toolkit for `ads.txt`, `app-ads.txt`, and `sellers.json` observability workflows.
+> A zero-dependency Chrome Extension (Manifest V3) for AdOps engineers to validate `ads.txt` and `app-ads.txt` inventories, cross-reference seller IDs against a `sellers.json` registry, and surface syntax errors or configuration mismatches in real-time — directly in the browser.
 
-[![Version](https://img.shields.io/badge/version-7.2.1-21aeb3?style=for-the-badge)](manifest.json)
-[![Build](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](.github/workflows/lint.yml)
-[![SAST](https://img.shields.io/badge/SAST-CodeQL-7a43b6?style=for-the-badge)](.github/workflows/sast.yml)
-[![OpenSSF Scorecard](https://img.shields.io/badge/Supply_Chain-Scorecard-0f766e?style=for-the-badge)](.github/workflows/scorecard.yml)
+[![Version](https://img.shields.io/badge/version-7.2.0-21aeb3?style=for-the-badge)](manifest.json)
+[![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
 [![Manifest](https://img.shields.io/badge/manifest-V3-2ea44f?style=for-the-badge)](manifest.json)
+[![Category](https://img.shields.io/badge/category-AdOps-orange?style=for-the-badge)](https://iabtechlab.com/ads-txt/)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge)](LICENSE)
+[![Repo Size](https://img.shields.io/github/repo-size/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
 
 > [!NOTE]
-> This project ships as a Chrome Extension (Manifest V3) and intentionally avoids runtime package dependencies.
+> The project is intentionally lightweight: no npm runtime dependency graph is required to run the extension.
 
 ## Table of Contents
 
