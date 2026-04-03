@@ -35,7 +35,7 @@
   let adsData = { text: "", url: "", date: null };
   let appAdsData = { text: "", url: "", date: null };
 
-  let sellersData = [];
+  let sellersDataMap = new Map();
   let current = "seller";
   let isFilterActive = true;
   let currentSellersUrl = DEFAULT_SELLERS_URL;
@@ -69,7 +69,7 @@
   async function fetchTxtFile(base, name, force = false) {
     if (!base) return { text: `File ${name} not found.`, isError: true };
     const url = `${base.replace(/\/$/, "")}/${name}`;
-    const fetchOptions = force ? { cache: "reload" } : {};
+    const fetchOptions = force ? { cache: "reload" } : { cache: "default" };
     try {
       const res = await fetchWithTimeoutAndRetry(url, { timeout: 8000, retries: 1, fetchOptions });
       const contentType = res.headers.get("content-type");
@@ -143,12 +143,7 @@
   }
 
   function buildSellerIdSet() {
-    const idSet = new Set();
-    if (!sellersData || sellersData.length === 0) return idSet;
-    for (const s of sellersData) {
-      idSet.add(String(s.seller_id));
-    }
-    return idSet;
+    return new Set(sellersDataMap.keys());
   }
 
   function renderTextSafe(container, text) {
@@ -157,7 +152,7 @@
     const brand = getBrandName(currentSellersUrl).toLowerCase();
     const highlightRegex = new RegExp(`(${brand})`, "gi");
     const sellerIdSet = buildSellerIdSet();
-    const hasSellerData = sellersData && sellersData.length > 0;
+    const hasSellerData = sellersDataMap.size > 0;
     const fragment = document.createDocumentFragment();
 
     text.split("\n").forEach(line => {
@@ -236,7 +231,13 @@
       return set;
     };
     const ids = new Set([...extractIds(adsData.text), ...extractIds(appAdsData.text)]);
-    return sellersData.filter(rec => ids.has(String(rec.seller_id)));
+    const matches = [];
+    ids.forEach(id => {
+      if (sellersDataMap.has(id)) {
+        matches.push(sellersDataMap.get(id));
+      }
+    });
+    return matches;
   }
 
   function updateStatusInfo(type) {
@@ -273,10 +274,11 @@
   function showCurrent() {
     linkBlock.textContent = "";
     const brand = getBrandName(currentSellersUrl);
+    const matches = findSellerMatches();
+    
     if (current === "seller") {
       statusContainer.style.display = "none";
       filterArea.style.display = "none";
-      const matches = findSellerMatches();
       sellerCountEl.textContent = matches.length || "0";
       output.innerHTML = "";
       if (matches.length === 0) {
@@ -309,7 +311,7 @@
       }
       filterAndRender(data.text, output);
     }
-    sendMessageSafe({ type: "setBadge", count: findSellerMatches().length });
+    sendMessageSafe({ type: "setBadge", count: matches.length });
   }
 
   function setActive(tab) { current = tab; [adsTab, appAdsTab, sellerTab].forEach(b => b.classList.toggle("active", b.id === `${tab}-tab`)); showCurrent(); }
@@ -464,7 +466,10 @@
           }
 
           sendMessageSafe({ type: "getSellersCache" }, (resp) => {
-            sellersData = (resp && resp.sellers) || [];
+            const sellersArray = (resp && resp.sellers) || [];
+            sellersDataMap.clear();
+            sellersArray.forEach(s => sellersDataMap.set(String(s.seller_id), s));
+            
             showCurrent();
             resolve();
             setTimeout(() => {
