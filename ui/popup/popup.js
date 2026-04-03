@@ -255,7 +255,6 @@
     renderBadge(managerBadgeEl, "MANAGER", managerRes);
   }
 
-  // ── Non-closing link: open in new tab via chrome.tabs.create ────────────
   function createNonClosingLink(url, text) {
     const a = document.createElement("a");
     a.href = url;
@@ -302,7 +301,6 @@
       if (data.url) {
         const href = safeHref(data.url);
         if (href) {
-          // Use non-closing link instead of regular <a>
           const link = createNonClosingLink(href, data.url);
           linkBlock.appendChild(link);
         } else {
@@ -419,7 +417,6 @@
     qaErrors.textContent = tErrors;
     qaRatio.textContent = `${tDirect} / ${tReseller}`;
 
-    // D/R ratio with color coding
     if (qaDR) {
       let drText = "—";
       let drClass = "dr-neutral";
@@ -457,11 +454,22 @@
           adsCountEl.textContent = countLines(adsData.text, adsRes.isError);
           appAdsCountEl.textContent = countLines(appAdsData.text, appRes.isError);
           
-          updateQuickAnalyzer();
+          if (qaBar) {
+             qaBar.style.display = "flex";
+             qaLines.textContent = "...";
+             qaDupes.textContent = "...";
+             qaErrors.textContent = "...";
+             qaRatio.textContent = "...";
+             if (qaDR) qaDR.textContent = "...";
+          }
 
           sendMessageSafe({ type: "getSellersCache" }, (resp) => {
             sellersData = (resp && resp.sellers) || [];
-            showCurrent(); resolve();
+            showCurrent();
+            resolve();
+            setTimeout(() => {
+              updateQuickAnalyzer();
+            }, 10);
           });
         });
       });

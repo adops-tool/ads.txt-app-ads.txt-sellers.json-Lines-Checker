@@ -485,7 +485,7 @@
     const sspList = Object.keys(seatsBySSP).sort();
     if (sspList.length === 0) { seatPanel.style.display = "none"; return; }
     seatPanel.style.display = "flex";
-    sspDropdown.innerHTML = '<option value="">Select SSP</option>';
+    sspDropdown.innerHTML = '<option value=""> Select SSP platform</option>';
     sspList.forEach(domain => {
       const opt = document.createElement("option");
       opt.value = domain;
