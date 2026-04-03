@@ -11,6 +11,10 @@
 [![Manifest](https://img.shields.io/badge/manifest-V3-2ea44f?style=for-the-badge)](manifest.json)
 [![Category](https://img.shields.io/badge/category-AdOps-orange?style=for-the-badge)](https://iabtechlab.com/ads-txt/)
 [![Repo Size](https://img.shields.io/github/repo-size/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
+[![Last Commit](https://img.shields.io/github/last-commit/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/commits/main)
+
+[![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/gdmhmbejelimkohnpineofcgdigocdog?style=for-the-badge&color=21aeb3)](https://chromewebstore.google.com/detail/adwmg-checker-adstxtselle/gdmhmbejelimkohnpineofcgdigocdog)
+[![Chrome Web Store Rating](https://img.shields.io/chrome-web-store/rating/gdmhmbejelimkohnpineofcgdigocdog?style=for-the-badge&color=21aeb3)](https://chromewebstore.google.com/detail/adwmg-checker-adstxtselle/gdmhmbejelimkohnpineofcgdigocdog)
 
 > [!NOTE]
 > The project is intentionally lightweight: no npm runtime dependency graph is required to run the extension.
