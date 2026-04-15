@@ -1,12 +1,13 @@
-# ADWMG Logging and Validation Library
+<a href="https://github.com/OstinUA" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/OstinUA/Image-storage/main/readme/readme-SVG-ads.txt-app-ads.txt-sellers.json-Lines-Checker.png" valign="middle" alt="readme SVG ads.txt app ads.txt sellers.json Lines Checker"></a>
 
-A zero-dependency, Chrome Extension-compatible logging and diagnostics library for validating `ads.txt` and `app-ads.txt`, correlating results with `sellers.json`, and surfacing actionable AdOps telemetry in real time.
+> A zero-dependency Chrome Extension (Manifest V3) for AdOps engineers to validate `ads.txt` and `app-ads.txt` inventories, cross-reference seller IDs against a `sellers.json` registry, and surface syntax errors or configuration mismatches in real-time — directly in the browser.
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/lint.yml?branch=main&style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker/actions/workflows/lint.yml)
 [![Version](https://img.shields.io/badge/version-7.4.1-21aeb3?style=for-the-badge)](manifest.json)
+[![Platform](https://img.shields.io/badge/platform-Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://developer.chrome.com/docs/extensions/mv3/)
 [![Manifest](https://img.shields.io/badge/manifest-V3-2ea44f?style=for-the-badge)](manifest.json)
-[![Coverage](https://img.shields.io/badge/coverage-manual%20%2B%20static-blueviolet?style=for-the-badge)](#testing)
+[![Category](https://img.shields.io/badge/category-AdOps-orange?style=for-the-badge)](https://iabtechlab.com/ads-txt/)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue?style=for-the-badge)](LICENSE)
+[![Repo Size](https://img.shields.io/github/repo-size/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker?style=for-the-badge)](https://github.com/OstinUA/ads.txt-app-ads.txt-sellers.json-Lines-Checker)
 
 > [!NOTE]
 > While the repository is packaged as a Chrome Extension (MV3), its core value is a reusable logging and validation pipeline implemented in JavaScript utilities and background orchestration logic.
